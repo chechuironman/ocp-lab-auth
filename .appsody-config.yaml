@@ -1,0 +1,2 @@
+project-name: auth-1
+stack: kabanero/nodejs:0.2

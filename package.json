@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-simple",
+  "version": "0.1.0",
+  "description": "Simple Node.js application",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node --inspect app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/appsody/stacks.git",
+    "directory": "incubator/nodejs/templates/simple"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.2",
+    "express": "^4.17.1",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.6",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "validator": "^12.1.0"
+  }
+}
