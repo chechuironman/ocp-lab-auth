@@ -45,12 +45,12 @@ metadata:
   labels:
     image.opencontainers.org/title: auth-1
     stack.appsody.dev/version: 0.2.6
-  name: auth-1
+  name: auth
   namespace: cloud-lab
 spec:
-  applicationImage: dev.local/auth-1
+  applicationImage: dev.local/auth
   createKnativeService: false
-  expose: true
+  expose: false
   service:
     port: 3000
     type: NodePort
