@@ -45,10 +45,10 @@ metadata:
   labels:
     image.opencontainers.org/title: auth-1
     stack.appsody.dev/version: 0.2.6
-  name: auth
+  name: usertoken
   namespace: cloud-lab
 spec:
-  applicationImage: dev.local/auth
+  applicationImage: dev.local/usertoken
   createKnativeService: false
   expose: false
   service:
