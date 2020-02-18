@@ -10,9 +10,7 @@ const validateLoginInput = require("../../validation/login");
 // Load User model
 const User = require("../../models/User");
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
+
 router.post("/register", (req, res) => {
     // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -20,11 +18,34 @@ router.post("/register", (req, res) => {
   // Check validatio
   console.log(isValid);
     if (!isValid) {
-      return res.status(400).json(errors);
+      console.log(errors);
+      var allErrors = ''
+      if (errors.firstName){
+        allErrors = errors.firstName+' , '+allErrors;
+      }
+      if (errors.lastName){
+        allErrors = errors.lastName+' , '+allErrors;  
+      }
+      if (errors.email){
+        allErrors = errors.email+' , '+allErrors;
+      }
+      if (errors.company){
+        allErrors = errors.company+' , '+allErrors;
+      }
+      if (errors.password2){
+        allErrors = errors.password2+' , '+allErrors;
+      }
+      if (errors.password){
+        allErrors = errors.password+' , '+allErrors;
+      }
+      // var strin = allErrors.replace(allErrors.substring(allErrors.length-1,allErrors.length),'');
+      // console.log(strin);
+      // console.log(allErrors);
+      return res.status(400).json({error: allErrors});
     }
   User.findOne({ email: req.body.email }).then(user => {
       if (user) {
-        return res.status(400).json({ email: "Email already exists" });
+        return res.status(400).json({ error: "Email already exists" });
       } else {
         const newUser = new User({
           firstName: req.body.firstName,
@@ -47,41 +68,28 @@ router.post("/register", (req, res) => {
       }
     });
   });
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
 router.post("/login", (req, res) => {
-  console.log("VALIDATION");
-    // Form validation
-    console.log(req.body)
   const { errors, isValid } = validateLoginInput(req.body);
-  // Check validation
     if (!isValid) {
-      return res.status(400).json(errors);
+      return res.status(400).json({error: 'Login is NOT valid'});
     }
   const email = req.body.email;
-    const password = req.body.password;
-  // Find user by email
+  const password = req.body.password;
     User.findOne({ email }).then(user => {
-      // Check if user exists
       if (!user) {
-        return res.status(404).json({ emailnotfound: "Email not found" });
+        return res.status(404).json({ error: "Email not found" });
       }
-  // Check password
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
-          // User matched
-          // Create JWT Payload
           const payload = {
             id: user.id,
             name: user.email
           };
-  // Sign token
           jwt.sign(
             payload,
             keys.secretOrKey,
             {
-              expiresIn: 360 // 1 year in seconds
+              expiresIn: 360 
             },
             (err, token) => {
               res.json({
@@ -93,7 +101,7 @@ router.post("/login", (req, res) => {
         } else {
           return res
             .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+            .json({ error: "Password incorrect" });
         }
       });
     });

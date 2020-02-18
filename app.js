@@ -39,7 +39,6 @@ mongoose
   )
   .then(() => console.log("MongoDB successfully connected for AUTH SERVICE"))
   .catch(err => console.log(err));
-console.log(db);
 
 // Passport middleware
 app.use(passport.initialize());
@@ -49,4 +48,4 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 
 const port = process.env.PORT || 3000; // process.env.port is Heroku's port if you choose to deploy the app there
-app.listen(port, () => console.log(`Server up and running on port  psss${port} !`));
+app.listen(port, () => console.log(`Server up and running on port ${port} !`));
