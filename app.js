@@ -5,7 +5,11 @@ const passport = require("passport");
 const users = require("./routes/api/users");
 const app = express();
 
+const pino = require('pino');
+const expressPino = require('express-pino-logger');
 
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const expressLogger = expressPino({ logger });
 
 // Bodyparser middleware
 app.use(function (req, res, next) {
@@ -28,6 +32,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+app.use(expressLogger);
 app.use(bodyParser.json());
 // DB Config
 const db = require("./config/keys").mongoURI;
