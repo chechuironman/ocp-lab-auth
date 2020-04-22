@@ -11,6 +11,8 @@ const validateLoginInput = require("../../validation/login");
 const User = require("../../models/User");
 
 
+var pino = require('pino')()
+
 router.post("/register", (req, res) => {
     // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -38,9 +40,8 @@ router.post("/register", (req, res) => {
       if (errors.password){
         allErrors = errors.password+' , '+allErrors;
       }
-      // var strin = allErrors.replace(allErrors.substring(allErrors.length-1,allErrors.length),'');
-      // console.log(strin);
-      // console.log(allErrors);
+
+      
       return res.status(400).json({error: allErrors});
     }
   User.findOne({ email: req.body.email }).then(user => {
@@ -92,6 +93,7 @@ router.post("/login", (req, res) => {
               expiresIn: 360 
             },
             (err, token) => {
+              pino.info('user %s logged',user.name)
               res.json({
                 success: true,
                 token: "Bearer " + token
@@ -99,6 +101,7 @@ router.post("/login", (req, res) => {
             }
           );
         } else {
+          pino.error('Password Incorrect')
           return res
             .status(400)
             .json({ error: "Password incorrect" });
